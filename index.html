@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIP Enhancement Scope - Resource Intelligence & Staffing Lifecycle</title>
+<style>
+  :root {
+    --primary: #1a56db;
+    --primary-dark: #1e3a8a;
+    --primary-soft: #eff6ff;
+    --primary-line: #bfdbfe;
+    --accent: #3b82f6;
+    --ink: #172033;
+    --text: #243248;
+    --muted: #64748b;
+    --light: #94a3b8;
+    --border: #e2e8f0;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --success: #059669;
+    --success-soft: #ecfdf5;
+    --warning: #d97706;
+    --warning-soft: #fffbeb;
+    --danger: #dc2626;
+    --danger-soft: #fef2f2;
+    --purple: #7c3aed;
+    --purple-soft: #f5f3ff;
+    --slate-soft: #f1f5f9;
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    --shadow-soft: 0 4px 12px rgba(15, 23, 42, 0.06);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  .cover {
+    min-height: 560px;
+    color: white;
+    background:
+      radial-gradient(circle at 82% 20%, rgba(255,255,255,0.16), transparent 28%),
+      linear-gradient(135deg, #10245c 0%, #1a56db 56%, #3b82f6 100%);
+    padding: 54px 64px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: "";
+    position: absolute;
+    inset: auto -90px -150px auto;
+    width: 440px;
+    height: 440px;
+    border-radius: 50%;
+    border: 80px solid rgba(255,255,255,0.06);
+  }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .brand {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .doc-tag {
+    border: 1px solid rgba(255,255,255,0.32);
+    background: rgba(255,255,255,0.14);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .cover-main {
+    max-width: 920px;
+    position: relative;
+    z-index: 1;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.28);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .cover h1 {
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
+    margin-bottom: 20px;
+    max-width: 840px;
+  }
+  .cover-sub {
+    color: rgba(255,255,255,0.86);
+    font-size: 18px;
+    max-width: 720px;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(130px, 1fr));
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .meta-card {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 12px;
+    padding: 13px 15px;
+  }
+  .meta-card span {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.68);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+    margin-bottom: 3px;
+  }
+  .meta-card strong {
+    color: white;
+    font-size: 14px;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 286px minmax(0, 1fr);
+    gap: 0;
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  .sidebar {
+    position: sticky;
+    top: 18px;
+    height: fit-content;
+    margin: 28px 0 28px 18px;
+    padding: 18px 16px;
+    background: rgba(255,255,255,0.92);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+  .side-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 3px;
+  }
+  .side-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .nav a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 7px 9px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 650;
+    transition: background 0.16s, color 0.16s;
+  }
+  .nav a:hover {
+    color: var(--primary-dark);
+    background: var(--primary-soft);
+  }
+  .side-note {
+    margin-top: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--primary-soft);
+    border: 1px solid var(--primary-line);
+    color: var(--primary-dark);
+    font-size: 12px;
+  }
+
+  main {
+    padding: 38px 44px 70px;
+    min-width: 0;
+  }
+  section {
+    scroll-margin-top: 24px;
+    margin-bottom: 48px;
+  }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  h2 {
+    color: var(--primary-dark);
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 9px;
+  }
+  .section-intro {
+    color: var(--muted);
+    max-width: 880px;
+    margin-bottom: 22px;
+  }
+
+  .callout {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--primary);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow-soft);
+  }
+  .callout strong { color: var(--primary-dark); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-soft);
+  }
+  .card h3 {
+    color: var(--ink);
+    font-size: 16px;
+    margin-bottom: 7px;
+  }
+  .card p, .card li {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .card ul { list-style: none; margin-top: 8px; }
+  .card li {
+    padding: 4px 0 4px 17px;
+    position: relative;
+  }
+  .card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 13px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .card.blue { background: var(--primary-soft); border-color: var(--primary-line); }
+  .card.green { background: var(--success-soft); border-color: #bbf7d0; }
+  .card.warn { background: var(--warning-soft); border-color: #fde68a; }
+  .card.purple { background: var(--purple-soft); border-color: #ddd6fe; }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .kpi {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 17px;
+    box-shadow: var(--shadow-soft);
+  }
+  .kpi .num {
+    font-size: 25px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+  .kpi .lbl {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(120px, 1fr));
+    gap: 10px;
+    margin: 24px 0 8px;
+  }
+  .flow-step {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 15px 12px;
+    min-height: 116px;
+    position: relative;
+    box-shadow: var(--shadow-soft);
+  }
+  .flow-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -11px;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background: var(--primary-line);
+    transform: translateY(-50%);
+    z-index: 2;
+  }
+  .flow-num {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: white;
+    font-weight: 900;
+    font-size: 12px;
+    margin-bottom: 9px;
+  }
+  .flow-step h3 {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 5px;
+  }
+  .flow-step p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .module {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .module-head {
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .module-title h3 {
+    color: var(--ink);
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  .module-title p {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 850;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .badge.mvp { background: #dcfce7; color: #166534; }
+  .badge.next { background: #dbeafe; color: #1e40af; }
+  .badge.future { background: #f3e8ff; color: #6b21a8; }
+  .module-body { padding: 18px 20px 20px; }
+
+  .mini-flow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 14px 0;
+  }
+  .mini-step {
+    background: var(--slate-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  details {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  summary {
+    cursor: pointer;
+    padding: 12px 14px;
+    font-weight: 800;
+    color: var(--primary-dark);
+    background: #f8fafc;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+";
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+  }
+  details[open] summary::after { content: "-"; }
+  .detail-body {
+    padding: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .field-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .field-table th {
+    text-align: left;
+    color: var(--primary-dark);
+    background: var(--primary-soft);
+    border-bottom: 1px solid var(--primary-line);
+    padding: 9px 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+  }
+  .field-table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--muted);
+  }
+  .field-table tr:last-child td { border-bottom: none; }
+  .field-table td:first-child {
+    color: var(--ink);
+    font-weight: 750;
+    width: 25%;
+  }
+
+  .decision-box {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+  .decision-box h3 {
+    padding: 14px 16px;
+    color: var(--primary-dark);
+    font-size: 15px;
+    border-bottom: 1px solid var(--border);
+    background: var(--primary-soft);
+  }
+  .decision-box ul {
+    list-style: none;
+    padding: 13px 16px 15px;
+  }
+  .decision-box li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .decision-box li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--success);
+  }
+
+  .roadmap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .phase {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .phase::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent), var(--purple));
+  }
+  .phase .phase-kicker {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .phase h3 {
+    color: var(--ink);
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .phase p {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .print-note {
+    margin-top: 24px;
+    color: var(--light);
+    font-size: 12px;
+  }
+
+  @media (max-width: 1180px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar {
+      position: static;
+      height: auto;
+      padding: 18px 20px;
+    }
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    main { padding: 30px 24px 60px; }
+    .flow, .roadmap { grid-template-columns: repeat(2, 1fr); }
+    .flow-step::after { display: none; }
+  }
+  @media (max-width: 860px) {
+    .cover { padding: 34px 24px; min-height: 620px; }
+    .cover-meta, .card-grid, .kpi-row, .two-col, .three-col, .mini-flow, .roadmap {
+      grid-template-columns: 1fr;
+    }
+    .nav { grid-template-columns: 1fr; }
+    .flow { grid-template-columns: 1fr; }
+    .field-table, .field-table tbody, .field-table tr, .field-table td {
+      display: block;
+      width: 100%;
+    }
+    .field-table thead { display: none; }
+    .field-table td:first-child {
+      width: 100%;
+      border-bottom: none;
+      padding-bottom: 2px;
+    }
+    .field-table td {
+      padding-top: 2px;
+    }
+  }
+  @media print {
+    body { background: white; }
+    .cover, .card, .module, .phase, .decision-box, .flow-step, .kpi {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .shell { display: block; max-width: none; }
+    .sidebar { display: none; }
+    main { padding: 34px; }
+    section, .module, .phase { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="brand-row">
+    <div class="brand">tensure</div>
+    <div class="doc-tag">Enhancement Scope</div>
+  </div>
+  <div class="cover-main">
+    <div class="eyebrow">TRIP Phase 2 Proposal</div>
+    <h1>Resource Intelligence & Staffing Lifecycle Platform</h1>
+    <p class="cover-sub">A practical enhancement scope to evolve TRIP from a resource tracker into a connected staffing operating system for requirements, matching, approvals, bench visibility, project allocation, and historical intelligence.</p>
+  </div>
+  <div class="cover-meta">
+    <div class="meta-card"><span>Prepared For</span><strong>Tensure Leadership</strong></div>
+    <div class="meta-card"><span>Primary Users</span><strong>Managers and Above</strong></div>
+    <div class="meta-card"><span>Approach</span><strong>Algorithm First, AI Later</strong></div>
+    <div class="meta-card"><span>Status</span><strong>Discussion Draft</strong></div>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="side-title">TRIP Enhancement Scope</div>
+    <div class="side-sub">Resource intelligence, staffing, and matching</div>
+    <nav class="nav">
+      <a href="#vision">1. Vision</a>
+      <a href="#current-state">2. Current State</a>
+      <a href="#lifecycle">3. Staffing Lifecycle</a>
+      <a href="#connected-data">4. Connected Data</a>
+      <a href="#access">5. Access & Approvals</a>
+      <a href="#self-service">6. Team Member Self-Service</a>
+      <a href="#masters">7. Master Entries</a>
+      <a href="#staffing">8. Staffing Plan</a>
+      <a href="#resources">9. Resource Tracker</a>
+      <a href="#skills">10. Skill Matrix</a>
+      <a href="#requirements">11. Requirements</a>
+      <a href="#matching">12. Matching Engine</a>
+      <a href="#audit">13. Audit Trail</a>
+      <a href="#search">14. Search Console</a>
+      <a href="#ai">15. AI & Semantic Scope</a>
+      <a href="#roadmap">16. Roadmap</a>
+    </nav>
+    <div class="side-note">Principle: build the core system with structured data and explainable rules first. Add paid AI capabilities only where they clearly save manager time.</div>
+  </aside>
+
+  <main>
+    <section id="vision">
+      <div class="section-label">Vision</div>
+      <h2>From Resource Tracker to Staffing Intelligence</h2>
+      <p class="section-intro">TRIP should become the single place where Tensure understands employee capability, demand, staffing decisions, project allocation, bench movement, feedback, and historical context.</p>
+      <div class="callout">
+        <strong>Enhancement goal:</strong> connect client requirements, role-wise matching, staffing plan, employee profile, project history, manager approvals, and audit trail into one trusted operating system.
+      </div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="num">1</div><div class="lbl">Source of Truth</div></div>
+        <div class="kpi"><div class="num">3</div><div class="lbl">Simple User Roles</div></div>
+        <div class="kpi"><div class="num">0</div><div class="lbl">Spreadsheet Dependency Target</div></div>
+        <div class="kpi"><div class="num">100%</div><div class="lbl">Traceable Staffing Decisions</div></div>
+      </div>
+    </section>
+
+    <section id="current-state">
+      <div class="section-label">Current State</div>
+      <h2>What TRIP Already Covers</h2>
+      <p class="section-intro">The current application already has a strong base: dashboard, resource tracker, skill matrix, requirements, matching, and weight configuration. The enhancement should build on this rather than replace it.</p>
+      <div class="card-grid">
+        <div class="card blue">
+          <h3>Employee Intelligence</h3>
+          <p>Employees, skills, deployability, ratings, bench status, availability, resume upload, feedback, and project data.</p>
+        </div>
+        <div class="card green">
+          <h3>Matching Foundation</h3>
+          <p>Weighted scoring exists and can be strengthened into role-wise matching with saved shortlists and clear reasons.</p>
+        </div>
+        <div class="card warn">
+          <h3>Spreadsheet Gap</h3>
+          <p>Staffing plan, region-wise bench, project history, and demand-to-allocation lifecycle still live mostly in sheets and manual discussions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="lifecycle">
+      <div class="section-label">Operating Flow</div>
+      <h2>End-to-End Staffing Lifecycle</h2>
+      <p class="section-intro">Every enhancement should support this flow. Once data enters TRIP, it should move forward naturally instead of being re-entered across spreadsheets, Slack threads, and employee profiles.</p>
+      <div class="flow">
+        <div class="flow-step"><div class="flow-num">1</div><h3>Client Demand</h3><p>Manager captures client/project requirement and expected role demand.</p></div>
+        <div class="flow-step"><div class="flow-num">2</div><h3>Role Lines</h3><p>Requirement is split into roles, counts, duration, skills, and status.</p></div>
+        <div class="flow-step"><div class="flow-num">3</div><h3>Matching</h3><p>System ranks best-fit people per role with explainable scoring.</p></div>
+        <div class="flow-step"><div class="flow-num">4</div><h3>Shortlist</h3><p>Managers save candidates, discuss, compare, and confirm selections.</p></div>
+        <div class="flow-step"><div class="flow-num">5</div><h3>Staffing Plan</h3><p>Confirmed resource moves into active/upcoming staffing plan.</p></div>
+        <div class="flow-step"><div class="flow-num">6</div><h3>Project History</h3><p>Allocation, feedback, role, and rolloff get written to employee profile.</p></div>
+        <div class="flow-step"><div class="flow-num">7</div><h3>Intelligence</h3><p>Future matching improves through verified skills, feedback, and history.</p></div>
+      </div>
+    </section>
+
+    <section id="connected-data">
+      <div class="section-label">Connected Data</div>
+      <h2>One Entry, Reflected Across the System</h2>
+      <p class="section-intro">The enhancement should avoid duplicate updates. When a manager confirms a staffing decision or updates project feedback, the same trusted record should appear in all relevant areas.</p>
+      <div class="card-grid">
+        <div class="card blue">
+          <h3>Requirement to Staffing</h3>
+          <p>Once candidates are selected for a role line, the system should create or update staffing plan records and preserve the original requirement history.</p>
+        </div>
+        <div class="card green">
+          <h3>Staffing to Employee Profile</h3>
+          <p>Confirmed allocation should update employee current project, allocation percentage, bench status, availability date, and project assignment history.</p>
+        </div>
+        <div class="card purple">
+          <h3>Feedback to Intelligence</h3>
+          <p>Project feedback entered from staffing or requirement pages should appear on the employee profile and improve future matching context.</p>
+        </div>
+      </div>
+      <details open>
+        <summary>Cross-reference rules</summary>
+        <div class="detail-body">
+          <table class="field-table">
+            <thead><tr><th>Action</th><th>System Impact</th></tr></thead>
+            <tbody>
+              <tr><td>Save shortlist</td><td>Stored against the requirement role line and visible from the matching results page.</td></tr>
+              <tr><td>Confirm resource placement</td><td>Creates staffing plan row, updates role line filled count, updates employee allocation, and creates employee project history.</td></tr>
+              <tr><td>Change rolloff date</td><td>Updates staffing plan, resource tracker availability, dashboard rolloff view, and employee profile.</td></tr>
+              <tr><td>Add project feedback</td><td>Visible in staffing history, employee feedback timeline, and future matching risk/recommendation context.</td></tr>
+              <tr><td>Close requirement</td><td>Requirement remains searchable as past demand; staffed role lines remain connected to staffing and project history.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section id="access">
+      <div class="section-label">Access Model</div>
+      <h2>Simple Role-Based Access for MVP</h2>
+      <p class="section-intro">Keep the first enhancement simple: three roles are enough. More granular roles can be added later only if needed.</p>
+      <div class="three-col">
+        <div class="card">
+          <h3>Superadmin</h3>
+          <ul>
+            <li>Adds allowed manager users</li>
+            <li>Controls master entries and settings</li>
+            <li>Can view and manage all records</li>
+            <li>Owns system-level configuration</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Manager</h3>
+          <ul>
+            <li>Uses the main TRIP application</li>
+            <li>Manages team resources and staffing</li>
+            <li>Approves team member submitted updates</li>
+            <li>Creates requirements and runs matching</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Team Member</h3>
+          <ul>
+            <li>Uses self-service form/page only</li>
+            <li>Can update own data</li>
+            <li>Cannot access main manager app</li>
+            <li>Submissions require manager approval</li>
+          </ul>
+        </div>
+      </div>
+      <details open>
+        <summary>Login and access rules</summary>
+        <div class="detail-body">
+          <table class="field-table">
+            <thead><tr><th>Area</th><th>Rule</th></tr></thead>
+            <tbody>
+              <tr><td>Main TRIP App</td><td>Only Superadmin-created manager users can login. Google Workspace authentication should be used, but domain email alone is not enough for app access.</td></tr>
+              <tr><td>Self-Service Form</td><td>Any valid @tensure.io team member can access the self-service page, but only to view or submit their own data.</td></tr>
+              <tr><td>Approval Gate</td><td>Employee submitted changes remain pending until the mapped manager approves, edits, or rejects them.</td></tr>
+              <tr><td>Future Roles</td><td>Leadership, HR, staffing admin, or viewer roles can be added later without changing the core model.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section id="self-service">
+      <div class="section-label">Employee Data Collection</div>
+      <h2>Team Member Self-Service Page</h2>
+      <p class="section-intro">Team members should not need main TRIP access. They need a focused page to keep their own details current. The manager remains accountable for validating the data.</p>
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title"><h3>Self-Service Submission Workflow</h3><p>Employee entered data becomes official only after manager approval.</p></div>
+          <span class="badge mvp">MVP Enhancement</span>
+        </div>
+        <div class="module-body">
+          <div class="mini-flow">
+            <div class="mini-step">Login with Tensure email</div>
+            <div class="mini-step">Update profile data</div>
+            <div class="mini-step">Submit for approval</div>
+            <div class="mini-step">Manager reviews</div>
+            <div class="mini-step">Approved data updates TRIP</div>
+          </div>
+          <details>
+            <summary>Field-level scope</summary>
+            <div class="detail-body">
+              <table class="field-table">
+                <thead><tr><th>Field Group</th><th>Fields to Capture</th></tr></thead>
+                <tbody>
+                  <tr><td>Basic Profile</td><td>Name, email, location, region, current role, designation, practice, total experience, current manager.</td></tr>
+                  <tr><td>Skill Set</td><td>Technical skills, professional skills, domain expertise, self-rating, years used, last used year.</td></tr>
+                  <tr><td>Certifications</td><td>Certification name, provider, status, completion date, expiry date, certificate URL or upload.</td></tr>
+                  <tr><td>Project History</td><td>Past projects, client, role played, duration, technologies used, responsibilities, business/domain context.</td></tr>
+                  <tr><td>Resume</td><td>Upload latest resume PDF/DOCX. System can extract text for basic skill matching in Phase 1 enhancement.</td></tr>
+                  <tr><td>AI Readiness</td><td>Tools used such as Copilot, Cursor, ChatGPT, Gemini; practical usage level; examples of AI-assisted work.</td></tr>
+                  <tr><td>Submission Metadata</td><td>Submitted date, submitted by, approval status, reviewed by, manager comments, final approved date.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="masters">
+      <div class="section-label">Settings</div>
+      <h2>Master Entry Management</h2>
+      <p class="section-intro">Master data keeps the system consistent. Instead of typing roles, regions, clients, and skills repeatedly, managers select from controlled lists.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>People Masters</h3>
+          <ul>
+            <li>Roles: Software Engineer, Senior DevOps Engineer, Delivery Manager</li>
+            <li>Designations and title levels</li>
+            <li>Practices and departments</li>
+            <li>Regions and locations</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Business Masters</h3>
+          <ul>
+            <li>Clients and contracting companies</li>
+            <li>Projects and internal initiatives</li>
+            <li>Billing categories: billable, non-billable, internal</li>
+            <li>Requirement and staffing statuses</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Capability Masters</h3>
+          <ul>
+            <li>Technical skill taxonomy</li>
+            <li>Domain and industry taxonomy</li>
+            <li>Certification taxonomy</li>
+            <li>AI readiness categories</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="staffing">
+      <div class="section-label">Core New Module</div>
+      <h2>Staffing Plan</h2>
+      <p class="section-intro">The staffing plan should replace the operational spreadsheet view. It should track ongoing projects, upcoming allocations, internal staffing, bench transitions, and past history.</p>
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title"><h3>Staffing Plan Workspace</h3><p>Maps client/project demand to resources and keeps allocation history current.</p></div>
+          <span class="badge mvp">High Priority</span>
+        </div>
+        <div class="module-body">
+          <div class="two-col">
+            <div class="decision-box">
+              <h3>Operational Views</h3>
+              <ul>
+                <li>Active staffing plan</li>
+                <li>Upcoming projects</li>
+                <li>Internal staffing</li>
+                <li>Region-wise bench</li>
+                <li>Roles to be filled</li>
+                <li>Historical staffing</li>
+              </ul>
+            </div>
+            <div class="decision-box">
+              <h3>Automatic Updates</h3>
+              <ul>
+                <li>Updates employee current allocation</li>
+                <li>Creates project assignment history</li>
+                <li>Updates rolloff and availability date</li>
+                <li>Maps feedback to employee profile</li>
+                <li>Preserves past project history</li>
+              </ul>
+            </div>
+          </div>
+          <details>
+            <summary>Field-level scope</summary>
+            <div class="detail-body">
+              <table class="field-table">
+                <thead><tr><th>Field</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Client / Project</td><td>Client name, project name, task/team, project summary, contracting company, SOW/MSA reference.</td></tr>
+                  <tr><td>Resource</td><td>Employee, Tensure title, mapped role, region, department, manager, verification status.</td></tr>
+                  <tr><td>Allocation</td><td>Allocation percentage, billing status, project role, start date, planned end date, actual end date, rolloff date.</td></tr>
+                  <tr><td>Ownership</td><td>Tensure sponsor, delivery owner, project manager, team/PM, client contact if required.</td></tr>
+                  <tr><td>Status</td><td>Planned, proposed, confirmed, active, rolling off, completed, cancelled, replacement needed.</td></tr>
+                  <tr><td>Notes</td><td>Manager comments, client notes, project risk notes, replacement notes, backfill requirements.</td></tr>
+                  <tr><td>History</td><td>Who was staffed, when they joined, when they rolled off, why they rolled off, final feedback.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources">
+      <div class="section-label">Resource Intelligence</div>
+      <h2>Resource Tracker Enhancements</h2>
+      <p class="section-intro">The resource tracker should become the manager's live view of people, availability, allocation, bench movement, and project assignment.</p>
+      <div class="card-grid">
+        <div class="card blue">
+          <h3>Recommended Tabs</h3>
+          <ul>
+            <li>All Resources</li>
+            <li>Bench by Region</li>
+            <li>US Bench, India Bench, Mexico Bench</li>
+            <li>Internal Staffing</li>
+            <li>Available Soon and Joining Soon</li>
+          </ul>
+        </div>
+        <div class="card green">
+          <h3>Recommended Filters</h3>
+          <ul>
+            <li>Region, practice, role, manager</li>
+            <li>Client, project, billing status</li>
+            <li>Availability month and rolloff date</li>
+            <li>Skill, certification, deployability</li>
+          </ul>
+        </div>
+        <div class="card warn">
+          <h3>Useful Signals</h3>
+          <ul>
+            <li>Current assignment and allocation</li>
+            <li>Expected rolloff and replacement flag</li>
+            <li>Performance concern indicator</li>
+            <li>Manager verified skill status</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="section-label">Capability Intelligence</div>
+      <h2>Skill Matrix Enhancements</h2>
+      <p class="section-intro">The current skill matrix is useful for finding people. It can become more powerful by showing capability distribution, gaps, and verification quality.</p>
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title"><h3>Enhanced Skill Matrix</h3><p>Find skills, compare capability depth, and identify gaps against demand.</p></div>
+          <span class="badge next">Enhancement</span>
+        </div>
+        <div class="module-body">
+          <div class="three-col">
+            <div class="card">
+              <h3>Search and Filter</h3>
+              <p>AND/OR skill search, category filters, min rating, years used, last used year, certification status.</p>
+            </div>
+            <div class="card">
+              <h3>Visual Matrix</h3>
+              <p>Skill heatmap by practice/region and optional sunburst matrix for leadership-level capability view.</p>
+            </div>
+            <div class="card">
+              <h3>Skill Quality</h3>
+              <p>Show whether a skill is self-submitted, manager verified, resume extracted, or project evidenced.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="requirements">
+      <div class="section-label">Demand Management</div>
+      <h2>Requirement Management 2.0</h2>
+      <p class="section-intro">A client requirement may need multiple roles over different durations. The system should track each role line separately, from early discussion to staffed or closed.</p>
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title"><h3>Detailed Requirement Page</h3><p>Captures demand, roles, status, discussions, and eventual staffing movement.</p></div>
+          <span class="badge mvp">High Priority</span>
+        </div>
+        <div class="module-body">
+          <details open>
+            <summary>Requirement header fields</summary>
+            <div class="detail-body">
+              <table class="field-table">
+                <thead><tr><th>Field</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Client Details</td><td>Client, contracting company, business unit, region, project name, opportunity owner.</td></tr>
+                  <tr><td>Commercial Status</td><td>Draft, discovery, awaiting MSA, MSA signed, open, on hold, lost, completed.</td></tr>
+                  <tr><td>Timeline</td><td>Expected start, expected duration, target staffing date, actual staffing date, closure date.</td></tr>
+                  <tr><td>Priority</td><td>Critical, high, medium, low with reason for urgency.</td></tr>
+                  <tr><td>Summary</td><td>Project summary, business context, client expectations, delivery notes.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <details>
+            <summary>Role line fields</summary>
+            <div class="detail-body">
+              <table class="field-table">
+                <thead><tr><th>Field</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Role</td><td>Mapped from role master: Principal Engineer, Senior Engineer, DevOps Engineer, QA Lead, etc.</td></tr>
+                  <tr><td>Openings</td><td>Number of people needed, filled count, remaining count.</td></tr>
+                  <tr><td>Skills</td><td>Must-have skills, nice-to-have skills, minimum rating, required domain.</td></tr>
+                  <tr><td>Experience</td><td>Minimum years, maximum years, client-facing requirement, communication expectation.</td></tr>
+                  <tr><td>Status</td><td>Open, matching, shortlisted, client submitted, selected, staffed, cancelled.</td></tr>
+                  <tr><td>Duration</td><td>Expected start date, end date, extension probability, allocation percentage.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <details>
+            <summary>Discussion and decision log</summary>
+            <div class="detail-body">
+              <p>Each requirement should have a comment thread similar to a Slack discussion, but stored in TRIP for future reference. Comments should support status decisions, mentions, attachments, shortlist notes, and final staffing decision notes.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="matching">
+      <div class="section-label">Matching</div>
+      <h2>Role-Wise Matching Engine</h2>
+      <p class="section-intro">Matching should run per role line, not just per whole requirement. This makes the output useful for multi-role client demand.</p>
+      <div class="module">
+        <div class="module-head">
+          <div class="module-title"><h3>Algorithmic Matching First</h3><p>Use explainable scoring rules before introducing paid AI. This keeps cost low and trust high.</p></div>
+          <span class="badge mvp">MVP Enhancement</span>
+        </div>
+        <div class="module-body">
+          <div class="mini-flow">
+            <div class="mini-step">Select role line</div>
+            <div class="mini-step">Run match</div>
+            <div class="mini-step">Review reasons</div>
+            <div class="mini-step">Save shortlist</div>
+            <div class="mini-step">Confirm staffing</div>
+          </div>
+          <details open>
+            <summary>Scoring dimensions</summary>
+            <div class="detail-body">
+              <table class="field-table">
+                <thead><tr><th>Dimension</th><th>How it should work</th></tr></thead>
+                <tbody>
+                  <tr><td>Skill Fit</td><td>Must-have skills carry more weight. Partial credit is given when rating is below the target but still relevant.</td></tr>
+                  <tr><td>Availability</td><td>Bench and available-soon resources score higher when they can start by the required date.</td></tr>
+                  <tr><td>Role Fit</td><td>Employee role/designation is compared against required role and seniority.</td></tr>
+                  <tr><td>Region Fit</td><td>Region, location, timezone, and client preference are considered.</td></tr>
+                  <tr><td>Project History</td><td>Past client, project, and domain experience improve ranking.</td></tr>
+                  <tr><td>Performance</td><td>Delivery rating, manager feedback, client feedback, and risk flags influence recommendation.</td></tr>
+                  <tr><td>Deployability</td><td>Uses computed deployability label and score to indicate deployment readiness.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+          <details>
+            <summary>Match output</summary>
+            <div class="detail-body">
+              <table class="field-table">
+                <thead><tr><th>Output</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td>Ranked Candidates</td><td>Best-fit candidates per role line with overall score.</td></tr>
+                  <tr><td>Reason for Match</td><td>Plain explanation: skill fit, availability, region, domain, communication, past work.</td></tr>
+                  <tr><td>Risk Indicators</td><td>Performance concern, active allocation, delayed availability, missing must-have skill.</td></tr>
+                  <tr><td>Save Shortlist</td><td>Managers can save selected candidates for review without staffing them yet.</td></tr>
+                  <tr><td>Confirm Staffing</td><td>Selected candidate moves into Staffing Plan and updates employee profile/project history.</td></tr>
+                  <tr><td>Override Reason</td><td>If a manager chooses a lower-ranked candidate, they should record why.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="audit">
+      <div class="section-label">Governance</div>
+      <h2>Audit Trail for Every Important Change</h2>
+      <p class="section-intro">Since staffing and capability data affects decisions, the system should always show who changed what and when.</p>
+      <div class="two-col">
+        <div class="decision-box">
+          <h3>Audit Events</h3>
+          <ul>
+            <li>Employee profile changed</li>
+            <li>Skill approved or rejected</li>
+            <li>Requirement status changed</li>
+            <li>Candidate shortlisted or staffed</li>
+            <li>Staffing plan allocation updated</li>
+            <li>Master entry changed</li>
+          </ul>
+        </div>
+        <div class="decision-box">
+          <h3>Audit Fields</h3>
+          <ul>
+            <li>User and role</li>
+            <li>Timestamp</li>
+            <li>Old value and new value</li>
+            <li>Source: manual, self-service, resume extraction, matching engine</li>
+            <li>Approval state and approver comments</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="search">
+      <div class="section-label">Discovery</div>
+      <h2>Global Search Console</h2>
+      <p class="section-intro">Managers should be able to search across staffing, people, skills, requirements, project history, and comments from one place.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Search Targets</h3>
+          <p>Employees, skills, certifications, requirements, staffing plan, projects, feedback, comments, and historical allocations.</p>
+        </div>
+        <div class="card">
+          <h3>Search Results</h3>
+          <p>Results should link directly to employee profile, requirement detail, staffing record, skill matrix, or project history.</p>
+        </div>
+        <div class="card">
+          <h3>Future Natural Language</h3>
+          <p>Later, support queries like "React engineers in India available in July with healthcare experience".</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ai">
+      <div class="section-label">Cost-Aware Intelligence</div>
+      <h2>AI and Semantic Scan Scope</h2>
+      <p class="section-intro">The proposal should avoid making paid AI a dependency for the first enhancement. Use structured rules and lightweight extraction first. Add deeper AI only where business value is clear.</p>
+      <div class="two-col">
+        <div class="module">
+          <div class="module-head">
+            <div class="module-title"><h3>Phase 1 Enhancement</h3><p>Low-cost intelligence using code and structured data.</p></div>
+            <span class="badge mvp">Recommended</span>
+          </div>
+          <div class="module-body">
+            <ul>
+              <li>Algorithmic role-wise matching</li>
+              <li>Configurable scoring weights</li>
+              <li>Explainable match reasons</li>
+              <li>Basic resume text extraction</li>
+              <li>Known skill and certification detection from master lists</li>
+              <li>Manager approval before extracted data becomes official</li>
+            </ul>
+          </div>
+        </div>
+        <div class="module">
+          <div class="module-head">
+            <div class="module-title"><h3>Phase 2 Optional</h3><p>Deeper semantic understanding if leadership approves AI cost.</p></div>
+            <span class="badge future">Optional</span>
+          </div>
+          <div class="module-body">
+            <ul>
+              <li>Semantic resume scan using AI or embeddings</li>
+              <li>Requirement text parsing</li>
+              <li>AI-generated employee summaries</li>
+              <li>AI-generated match explanations</li>
+              <li>Natural language staffing search</li>
+              <li>Bench optimization suggestions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <details open>
+        <summary>Semantic scan recommendation</summary>
+        <div class="detail-body">
+          <p>Semantic scan is valuable, but should be positioned as a phased capability. The first enhancement can extract resume text and match against known master skills without heavy AI cost. Later, semantic scan can understand related concepts, infer domains, and detect skills that are not written exactly as master skill names.</p>
+        </div>
+      </details>
+    </section>
+
+    <section id="roadmap">
+      <div class="section-label">Delivery Plan</div>
+      <h2>Recommended Phased Roadmap</h2>
+      <p class="section-intro">A phased roadmap keeps the enhancement practical and avoids trying to build every future intelligence idea at once.</p>
+      <div class="roadmap">
+        <div class="phase">
+          <div class="phase-kicker">Phase 1</div>
+          <h3>Access, Masters, Self-Service</h3>
+          <p>Google login, simple roles, manager allowlist, employee self-service form, approval queue, master entries.</p>
+        </div>
+        <div class="phase">
+          <div class="phase-kicker">Phase 2</div>
+          <h3>Staffing Plan and Resource Views</h3>
+          <p>Spreadsheet replacement, region-wise bench, internal staffing, active/upcoming/historical allocation tracking.</p>
+        </div>
+        <div class="phase">
+          <div class="phase-kicker">Phase 3</div>
+          <h3>Requirements 2.0 and Matching</h3>
+          <p>Multi-role requirements, discussion threads, role-wise matching, shortlist save, confirm staffing flow.</p>
+        </div>
+        <div class="phase">
+          <div class="phase-kicker">Phase 4</div>
+          <h3>Search, Audit, Optional AI</h3>
+          <p>Global search, complete audit trail, basic resume extraction, optional semantic scan and AI-assisted features.</p>
+        </div>
+      </div>
+      <p class="print-note">Prepared as a discussion draft. Final scope should be confirmed after leadership and development review.</p>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>
